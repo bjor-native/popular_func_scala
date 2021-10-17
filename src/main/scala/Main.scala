@@ -15,24 +15,23 @@ object Main extends App {
     }
     z :+ s"$title ${f.name}, ${f.age}"
   }
-  println(stringList(1))
+  println(stringList(1)) // return: Mr. Biggus Dickus, 43
 
   /** flatten
     */
 
   val lol = List(List(1, 2), List(3, 4))
   val res = lol.flatten
-  println(res)
+  println(res) // return: List(1, 2, 3, 4)
 
   /** groupMap groupMapReduce
     */
 
   val fruits = List("apple", "apple", "orange", "pear", "pear", "pear")
-
-  println(fruits.groupMap(identity)(identity))
+  println(fruits.groupMap(identity)(identity)) 
+  // return: Map(orange -> List(orange), apple -> List(apple, apple), pear -> List(pear, pear, pear))
 
   case class Pet(species: String, name: String, age: Int)
-
   val pets = List(
     Pet("cat", "sassy", 2),
     Pet("cat", "bella", 3),
@@ -42,8 +41,7 @@ object Main extends App {
     Pet("bird", "coco", 2),
     Pet("bird", "kiwi", 1)
   )
-
-  println(pets.groupMapReduce(_.species)(_ => 1)(_ + _))
+  println(pets.groupMapReduce(_.species)(_ => 1)(_ + _)) // return: Map(cat -> 2, bird -> 2, dog -> 3)
 
   import java.time.LocalDate
   case class Product(
@@ -52,7 +50,6 @@ object Main extends App {
       listPrice: Double,
       discPrice: Double
   )
-
   val products = List(
     Product("p001", LocalDate.of(2019, 9, 11), 10, 8.5),
     Product("p002", LocalDate.of(2019, 9, 18), 12, 10),
@@ -63,12 +60,10 @@ object Main extends App {
     Product("p007", LocalDate.of(2019, 11, 16), 10, 8.5),
     Product("p008", LocalDate.of(2019, 11, 25), 10, 9)
   )
-
   val r = products.groupMapReduce(_.saleDate.getMonth)(p =>
     (p.listPrice, p.discPrice)
   )((total, prc) => (total._1 + prc._1, total._2 + prc._2))
-
-  println(r)
+  println(r) // return: Map(OCTOBER -> (27.0,20.5), SEPTEMBER -> (32.0,27.5), NOVEMBER -> (35.0,29.5))
 
 }
 
